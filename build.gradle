@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'com.crypto'
+version '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.h2database:h2:2.1.214'
+    implementation 'com.google.guava:guava:31.1-jre'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+application {
+    mainClass = 'com.crypto.Main'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.crypto.Main'
+    }
+    from {
+        configurations.runtimeClasspath.collect { 
+            it.isDirectory() ? it : zipTree(it) 
+        }
+    }
+}
+
+test {
+    useJUnit()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
